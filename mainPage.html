@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>mainpage</h1>
+    <input id="id_value" type="text">
+    <input id="pw_value" type="password">
+    <input type="button" value="로그인" onclick="loginEvent()">
+
+<script>
+    window.onload = async () => {
+        if (localStorage.getItem("TOKEN")) {
+            const response = await fetch("/account/autoLogin", {
+                method: "POST", 
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    token: localStorage.getItem("TOKEN")
+                })
+            })
+            const result = await response.json()
+            if (result.success) {
+                alert("자동 로그인 성공")
+            } else {
+                alert(result.message)
+                localStorage.removeItem("TOKEN")
+            }
+        }
+    }
+
+    const loginEvent = async () => {
+
+        const response = await fetch("/account/login", {
+            method: "POST", 
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id_value: document.getElementById("id_value").value,
+                pw_value: document.getElementById("pw_value").value
+            })
+        })
+
+        const result = await response.json()
+
+        if (result.success) {
+            alert("로그인 성공")
+            localStorage.setItem("TOKEN", result.token)
+
+        } else {
+            alert(result.message)
+        }
+    }
+</script>
+
+</body>
+</html>
