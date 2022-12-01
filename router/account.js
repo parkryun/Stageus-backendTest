@@ -22,33 +22,7 @@ router.post("/login", async (req, res) => {
         database: "stageus",
         port: 5432
     })
-
-    // // PostgreSQL 연결 (callback)
-    // client.connect((err) => { // 이게 비동기함수 client.
-    //     if(err) {   // error가 발생
-    //         result.message = "DB 연결에 오류가 있습니다."
-    //         res.send(result)
-    //     } else {      // error가 발생x
-    //         const sql = "SELECT * FROM backend.account WHERE id=$1 and pw=$2;" // ? 대신 $로 대체 
-    //         const values = [idValue, pwValue]  // value값들을 넣어서
-    //         client.query(sql, values, (err, data) => {
-    //             if (err) {  // sql 에러 발생
-    //                 result.message = "SQL문이 잘못되었습니다."
-    //                 res.send(result)
-    //             } else {    // sql 에러 발생x
-    //                 const row = data.rows
-    //                 if (row.lenth > 0) {
-    //                     result.success = true
-    //                 }
-    //                 res.send(result)
-    //             }
-    //         })
-    //     }
-    //     // res.send(result) // 반환 이게 callback 방식
-    // })
-    // // res.send(result)
-
-    // PostgreSQL 연결 ( async-await ) await이 포함되어있는 함수의 시작 부분에 async를 붙여줘야해
+ 
     try {
         await client.connect() // await 붙여주는
         

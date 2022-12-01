@@ -12,6 +12,25 @@
     <input id="pw_value" type="password">
     <input type="button" value="로그인" onclick="loginEvent()">
 
+    <div>
+        <input type="button" value="증가" onclick="increaseEvent()">
+        <input type="button" value="감소" onclick="decreaseEvent()">
+        <input type="button" value="출력" onclick="printEvent()">
+    </div>
+
+    <div>
+        <span>마우스</span>
+        <input type="button" value="+" onclick="itemIncreaseEvent('마우스')">
+        <input type="button" value="-" onclick="itemDecreaseEvent('마우스')">
+    </div>
+    <div>
+        <span>키보드</span>
+        <input type="button" value="+" onclick="itemIncreaseEvent('키보드')">
+        <input type="button" value="-" onclick="itemDecreaseEvent('키보드')">
+    </div>
+    <input type="button" value="출력" onclick="cartPrintEvent()">
+    <input type="button" value="비우기" onclick="cartEmptyEvent()">
+
 <script>
     window.onload = async () => {
         if (localStorage.getItem("TOKEN")) {
@@ -55,6 +74,106 @@
 
         } else {
             alert(result.message)
+        }
+    }
+
+    const increaseEvent = async () => {
+        const response = await fetch("/counter/increase", {
+            method: "POST"
+        })
+        const result = await response.json()
+
+        if (result.success) {
+            console.log("증가 완료")
+        } else {
+            console.log(result.message)
+        }
+    }
+
+    const decreaseEvent = async () => {
+        const response = await fetch("/counter/decrease", {
+            method: "POST"
+        })
+        const result = await response.json()
+
+        if (result.success) {
+            console.log("감소 완료")
+        } else {
+            console.log(result.message)
+        }
+    }
+
+    const printEvent = async () => {
+        const response = await fetch("/counter")    //get을 안해도 되낭..
+        const result = await response.json()    
+
+        if (result.success) {
+            console.log(result.data)
+        } else {
+            console.log(result.message)
+        }
+    }
+
+
+    const itemIncreaseEvent = async (itemName) => {
+        const response = await fetch("/cart/increase", {
+            method: "POST", 
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                item_name: itemName
+            })
+        })
+        const result = await response.json()
+
+        if (result.success) {
+            console.log("증가 완료")
+        } else {
+            console.log(result.message)
+        }
+    }
+    
+    const itemDecreaseEvent = async (itemName) => {
+        const response = await fetch("/cart/decrease", {
+            method: "POST", 
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                item_name: itemName
+            })
+        })
+        const result = await response.json()
+
+        if (result.success) {
+            console.log("감소 완료")
+        } else {
+            console.log(result.message)
+        }
+    }
+
+    const cartPrintEvent = async () => {
+        const response = await fetch("/cart")
+        const result = await response.json()
+
+        if (result.success) {
+            console.log(result.data)
+        } else {
+            console.log(result.message)
+        }
+    }
+
+    const cartEmptyEvent = async () => {
+        const response = await fetch("/cart/all", {
+            method: "DELETE"
+        })
+        const result = await response.json()
+
+        if (result.success) {
+            console.log("비우기 완료")
+        } else {
+            console.log(result.message)
         }
     }
 </script>

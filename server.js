@@ -37,6 +37,12 @@ app.use("/account", accountApi)
 const inventoryApi = require("./router/inventory.js")
 app.use("/inventory", inventoryApi)
 
+const counterApi = require("./router/counter.js")
+app.use("/counter", counterApi)
+
+const cartApi = require("./router/cart.js")
+app.use("/cart", cartApi)
+
 app.listen(port, () => {
     console.log(`${port} 번에서 웹 서버 시작`)
 }) // http로 여는 방법
