@@ -43,6 +43,9 @@ app.use("/counter", counterApi)
 const cartApi = require("./router/cart.js")
 app.use("/cart", cartApi)
 
+const boradApi = require("./router/board.js")
+app.use("/board", boradApi)
+
 app.listen(port, () => {
     console.log(`${port} 번에서 웹 서버 시작`)
 }) // http로 여는 방법

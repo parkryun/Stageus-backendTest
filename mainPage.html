@@ -31,7 +31,22 @@
     <input type="button" value="출력" onclick="cartPrintEvent()">
     <input type="button" value="비우기" onclick="cartEmptyEvent()">
 
+    <div>
+        <span>작성자</span>
+        <input type="text" id="author">
+        <span>제목</span>
+        <input type="text" id="title">
+        <span>내용</span>
+        <input type="text" id="content">
+        <input type="button" value="작성" onclick="addBoardEvent()">
+    </div>
+    <div>
+        <input type="text" id="keyword">
+        <input type="button" value="검색" onclick="searchBoardContent()">
+    </div>
+
 <script>
+
     window.onload = async () => {
         if (localStorage.getItem("TOKEN")) {
             const response = await fetch("/account/autoLogin", {
@@ -114,7 +129,6 @@
         }
     }
 
-
     const itemIncreaseEvent = async (itemName) => {
         const response = await fetch("/cart/increase", {
             method: "POST", 
@@ -172,6 +186,40 @@
 
         if (result.success) {
             console.log("비우기 완료")
+        } else {
+            console.log(result.message)
+        }
+    }
+
+    const addBoardEvent = async () => {
+        const response = await fetch("/board", {
+            method: "POST", 
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                author: document.getElementById("author").value,
+                title: document.getElementById("title").value,
+                content: document.getElementById("content").value
+            })
+        })
+        const result = await response.json()
+
+        if (result.success) {
+            console.log("게시글 작성 완료")
+        } else {
+            console.log(result.message)
+        }
+    }
+
+    const searchBoardContent = async () => {
+
+        const keyword = document.getElementById("keyword").value
+        const response = await fetch(`/board/search?keyword=${keyword}`)
+        const result = await response.json()
+
+        if (result.success) {
+            console.log(result.data)
         } else {
             console.log(result.message)
         }
